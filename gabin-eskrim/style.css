@@ -1,0 +1,251 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #fff9f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header & Navbar Responsif */
+header {
+    background: linear-gradient(135deg, #ff5252, #ff7979);
+    color: white;
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(255, 82, 82, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.cart-count {
+    background: #ffda79;
+    color: #333;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* Container Utama */
+main {
+    flex: 1;
+    padding: 20px 4%;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 40px 15px;
+    background: linear-gradient(135deg, #ff7979, #ffbe76);
+    color: white;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.hero h1 { 
+    font-size: 2rem; 
+    margin-bottom: 10px; 
+}
+
+.hero p { 
+    font-size: 1rem; 
+    margin-bottom: 20px; 
+}
+
+.btn {
+    display: inline-block;
+    background: #ff5252;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.btn:hover { background: #b33939; }
+
+/* Grid Produk (Otomatis menyesuaikan HP & Laptop) */
+.grid-produk {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title { font-size: 1.1rem; margin-bottom: 6px; color: #ff5252; }
+.card-price { font-size: 1.05rem; font-weight: bold; margin-bottom: 12px; }
+
+/* Tabel Responsif untuk HP (Bisa digeser horizontal jika terlalu lebar) */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    min-width: 500px;
+}
+
+th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+th { background: #ff7979; color: white; }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   MEDIA QUERY KHUSUS LAYAR HP (Layar < 768px)
+   ========================================= */
+@keyframes floatImage {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 15px;
+    }
+
+    nav {
+        justify-content: center;
+        margin-top: 8px;
+    }
+
+    nav a {
+        margin: 2px 5px;
+        font-size: 0.85rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 0.95rem;
+    }
+
+    main {
+        padding: 15px 3%;
+    }
+
+    /* Penyesuaian khusus halaman Opening/Intro di HP */
+    .intro-container {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 15px !important;
+    }
+
+    .intro-text h1 {
+        font-size: 2rem !important;
+    }
+
+    .animasi-eskrim {
+        width: 220px !important;
+        height: 220px !important;
+        margin-bottom: 15px;
+    }
+}
