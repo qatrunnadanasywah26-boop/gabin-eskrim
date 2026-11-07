@@ -11,10 +11,10 @@ if (!$p) {
     exit;
 }
 
-// Simulasi harga berdasarkan ukuran (Misal: Large harga normal, Medium diskon/beda harga. 
-// Kamu bisa sesuaikan angka penyesuaian harganya di sini atau ambil dari database jika ada kolom khusus).
-$harga_large = intval($p['harga']);
-$harga_medium = intval($p['harga'] * 0.85); // Contoh: Medium 15% lebih murah dari Large, atau atur sesuai kebutuhan
+// Menetapkan harga pasti sesuai permintaan: Medium 6rb, Large 11rb 
+// (Atau jika di database harga dasarnya sudah Large, kita jadikan acuan)
+$harga_large = intval($p['harga']); // Harga dari database (biasanya Large)
+$harga_medium = 6000; // Harga Medium fix Rp 6.000
 
 // Proses ketika tombol "Tambah ke Keranjang" ditekan dari halaman detail
 if (isset($_POST['tambah_keranjang'])) {
@@ -145,8 +145,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
 
             <div class="product-info">
                 <h2><?= htmlspecialchars($p['nama']) ?></h2>
-                <!-- Harga yang dinamis akan berubah lewat script -->
-                <div class="price" id="textHarga">Rp <?= number_format($harga_large, 0, ',', '.') ?></div>
+                <!-- Harga awal disesuaikan dengan ukuran default produk -->
+                <div class="price" id="textHarga">Rp <?= number_format(($p['ukuran'] == 'medium') ? $harga_medium : $harga_large, 0, ',', '.') ?></div>
                 <div class="stock-info">📦 Stok Tersedia: <strong><?= $p['stok'] ?> pcs</strong></div>
                 <div class="desc"><?= nl2br(htmlspecialchars($p['deskripsi'])) ?></div>
 
@@ -154,8 +154,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                     <div class="form-group">
                         <label>Pilih Ukuran Varian</label>
                         <select name="ukuran_dipilih" id="pilihUkuran" required>
-                            <option value="large" <?= ($p['ukuran'] == 'large') ? 'selected' : '' ?>>Large</option>
-                            <option value="medium" <?= ($p['ukuran'] == 'medium') ? 'selected' : '' ?>>Medium</option>
+                            <option value="large" <?= ($p['ukuran'] == 'large') ? 'selected' : '' ?>>Large (Rp 11.000)</option>
+                            <option value="medium" <?= ($p['ukuran'] == 'medium') ? 'selected' : '' ?>>Medium (Rp 6.000)</option>
                         </select>
                     </div>
 
@@ -175,19 +175,18 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
     </footer>
 
     <script>
-        // Data harga dari PHP ke JavaScript
-        const hargaLarge = <?= $harga_large ?>;
-        const hargaMedium = <?= $harga_medium ?>;
+        // Harga fix sesuai permintaan kamu: Large 11rb, Medium 6rb
+        const hargaLarge = 11000;
+        const hargaMedium = 6000;
 
         const selectUkuran = document.getElementById('pilihUkuran');
         const textHarga = document.getElementById('textHarga');
 
-        // Fungsi mengubah format angka ke Rupiah
         function formatRupiah(angka) {
             return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        // Event listener saat pilihan ukuran diubah
+        // Ubah harga secara otomatis saat ukuran dipilih
         selectUkuran.addEventListener('change', function() {
             if (this.value === 'large') {
                 textHarga.textContent = formatRupiah(hargaLarge);
