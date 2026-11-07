@@ -19,7 +19,19 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
     <title>Keranjang Belanja - BinIce</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #fce4ec; color: #593539; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Background Menggunakan Gambar Penuh Tanpa Terpotong */
+        body { 
+            background-image: url('mt.jpeg'); /* Ganti 'betul3.png' dengan nama file gambar background kamu */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #593539; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
         
         header { 
             display: flex; 
@@ -31,7 +43,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             z-index: 100;
         }
         
-        .logo { font-size: 1.8rem; font-weight: 800; color: #d81b60; letter-spacing: 1px; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: #d81b60; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
 
         /* Navigasi Utama Berbentuk Button / Kotak */
         nav { 
@@ -148,19 +160,19 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         .mobile-auth { display: none; }
         
         main { flex: 1; padding: 20px 8% 60px 8%; max-width: 1000px; margin: 0 auto; width: 100%; }
-        h2 { color: #c2185b; margin-bottom: 25px; font-size: 2rem; }
+        h2 { color: #800000; margin-bottom: 25px; font-size: 2rem; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
         
-        .table-responsive { width: 100%; overflow-x: auto; background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(216, 27, 96, 0.08); padding: 20px; margin-bottom: 25px; }
+        .table-responsive { width: 100%; overflow-x: auto; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px); border-radius: 20px; box-shadow: 0 10px 25px rgba(216, 27, 96, 0.15); padding: 20px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.8); }
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
         th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #f8bbd0; font-size: 0.95rem; }
         th { background: #f8bbd0; color: #880e4f; font-weight: 700; border-radius: 8px; }
         
-        .btn { display: inline-block; background: #d81b60; color: white; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3); transition: 0.3s; }
-        .btn:hover { background: #ad1457; }
+        .btn { display: inline-block; background: #800000; color: white; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(128, 0, 0, 0.2); transition: 0.3s; }
+        .btn:hover { background: #500000; }
         .btn-secondary { background: #f8bbd0; color: #880e4f; }
         .btn-secondary:hover { background: #f48fb1; }
         
-        footer { background: #ad1457; color: white; text-align: center; padding: 20px; margin-top: auto; font-size: 0.9rem; }
+        footer { background: rgba(173, 20, 87, 0.85); backdrop-filter: blur(5px); color: white; text-align: center; padding: 20px; margin-top: auto; font-size: 0.9rem; }
         
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-15px); }
@@ -255,8 +267,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         <h2>Keranjang Belanja Anda</h2>
 
         <?php if (empty($_SESSION['keranjang'])): ?>
-            <div style="background: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 25px rgba(216, 27, 96, 0.08);">
-                <p style="font-size: 1.1rem; margin-bottom: 20px; color: #7b5558;">Keranjang belanja Anda masih kosong.</p>
+            <div style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px); padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 25px rgba(216, 27, 96, 0.1);">
+                <p style="font-size: 1.1rem; margin-bottom: 20px; color: #7b5558; font-weight: 600;">Keranjang belanja Anda masih kosong.</p>
                 <a href="produk.php" class="btn">Pilih Produk Dulu Yuk!</a>
             </div>
         <?php else: ?>
