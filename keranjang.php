@@ -21,8 +21,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
         /* Background Menggunakan Gambar Penuh Tanpa Terpotong */
-        body { 
-            background-image: url('mt.jpeg'); /* Ganti 'betul3.png' dengan nama file gambar background kamu */
+    body { 
+            background-image: url('mt.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -31,6 +31,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             min-height: 100vh; 
             display: flex; 
             flex-direction: column; 
+            padding-bottom: 30px; 
         }
         
         header { 
