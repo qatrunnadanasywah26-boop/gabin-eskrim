@@ -2,8 +2,6 @@
 session_start();
 include 'koneksi.php';
 
-// Logika ?beli lama sudah digantikan oleh detail_produk.php, 
-// tapi bagian ini tetap dibiarkan aman jika ada fungsi lain yang memanggilnya.
 $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjang']) : 0;
 ?>
 <!DOCTYPE html>
@@ -26,7 +24,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             min-height: 100vh; 
             display: flex; 
             flex-direction: column; 
-            padding-bottom: 30px; 
+            overflow-x: hidden;
         }
         
         header { 
@@ -178,12 +176,23 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
 
         .mobile-auth { display: none; }
         
-        main { flex: 1; padding: 20px 5% 40px 5%; max-width: 1300px; margin: 0 auto; width: 100%; }
+        /* Main diatur agar posisi produk berada di tengah-tengah agak ke bawah */
+        main { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px 20px 60px 20px; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            width: 100%; 
+        }
         
-        /* Judul Varian dan Harga */
+        /* Judul Katalog Produk */
         .page-title {
             text-align: center;
-            margin: 10px 0 15px 0;
+            margin-bottom: 25px;
         }
         .page-title h2 {
             color: #800000;
@@ -205,60 +214,46 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             border-radius: 2px;
         }
 
-        /* Teks Pemisah di Tengah (Ukuran Medium) */
-        .section-divider {
-            text-align: center;
-            margin: 25px 0 10px 0;
-        }
-        .section-divider h3 {
-            color: #800000;
-            font-size: 1.3rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            display: inline-block;
-            position: relative;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
-        }
-        .section-divider h3::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 2px;
-            background-color: #800000;
-            margin: 4px auto 0 auto;
-            border-radius: 2px;
-        }
-
-        .row-section {
-            margin-bottom: 15px;
-        }
-
-        .catalog-wrapper {
+        /* Container Carousel */
+        .carousel-container {
             position: relative;
             display: flex;
             align-items: center;
-        }
-        
-        .scroll-container {
+            justify-content: center;
             width: 100%;
-            overflow-x: auto;
-            padding: 10px 10px 25px 10px;
-            scroll-behavior: smooth;
-            scrollbar-width: thin;
-            scrollbar-color: #d81b60 rgba(255, 182, 193, 0.3);
+            max-width: 860px; 
+            margin: 0 auto;
         }
 
-        .scroll-container::-webkit-scrollbar {
-            height: 8px;
+        /* Efek Gradasi / Blur di Sisi Kiri & Kanan */
+        .carousel-container::before,
+        .carousel-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100px;
+            z-index: 5;
+            pointer-events: none;
         }
-        .scroll-container::-webkit-scrollbar-track {
-            background: rgba(255, 182, 193, 0.3);
-            border-radius: 10px;
+        .carousel-container::before {
+            left: -10px;
+            background: linear-gradient(to right, rgba(255,255,255,0.75), transparent);
+            backdrop-filter: blur(2px);
+            border-radius: 35px 0 0 35px;
         }
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: #d81b60;
-            border-radius: 10px;
+        .carousel-container::after {
+            right: -10px;
+            background: linear-gradient(to left, rgba(255,255,255,0.75), transparent);
+            backdrop-filter: blur(2px);
+            border-radius: 0 35px 35px 0;
+        }
+
+        .scroll-wrapper {
+            width: 100%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            padding: 30px 10px;
         }
 
         .grid-row { 
@@ -266,80 +261,107 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             gap: 25px; 
             width: max-content;
             padding-top: 35px;
-            padding-left: 10px;
-            padding-right: 10px;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
+        /* Tombol Geser Kiri / Kanan yang Unik */
         .scroll-btn {
-            background-color: #800000;
+            background: linear-gradient(135deg, #800000 0%, #b30000 100%);
             color: white;
-            border: none;
-            width: 45px;
-            height: 45px;
+            border: 2px solid #fff;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 20px rgba(128,0,0,0.35);
             transition: 0.3s;
+            position: absolute;
             z-index: 10;
-            flex-shrink: 0;
         }
         .scroll-btn:hover {
-            background-color: #500000;
-            transform: scale(1.1);
+            background: linear-gradient(135deg, #500000 0%, #800000 100%);
+            transform: scale(1.12);
+            box-shadow: 0 8px 25px rgba(128,0,0,0.5);
         }
-        .scroll-btn.left { margin-right: 10px; }
-        .scroll-btn.right { margin-left: 10px; }
+        .scroll-btn.left { left: -65px; }
+        .scroll-btn.right { right: -65px; }
 
+        /* Desain Kartu Produk yang Jauh Lebih Unik & Estetik */
         .card { 
-            background: linear-gradient(180deg, #ffb6c1 0%, #ff8da1 100%);
-            border-radius: 30px; 
-            box-shadow: 0 10px 25px rgba(128, 0, 0, 0.15); 
+            background: linear-gradient(145deg, #ffffff 0%, #fff0f3 100%);
+            border-radius: 35px; 
+            box-shadow: 0 15px 35px rgba(128, 0, 0, 0.12); 
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
-            transition: transform 0.3s; 
+            transition: all 0.4s ease; 
             position: relative;
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            width: 240px;
-            padding: 20px 16px 16px 16px;
+            border: 3px solid rgba(255, 182, 193, 0.6);
+            width: 260px; 
+            min-height: 330px; 
+            padding: 25px 20px 22px 20px;
+            opacity: 0.35;
+            filter: blur(3px);
+            transform: scale(0.9);
         }
-        .card:hover { transform: translateY(-5px); }
+        
+        /* Kartu yang aktif di tengah (Glow Effect) */
+        .card.active {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1.06); 
+            box-shadow: 0 20px 45px rgba(216, 27, 96, 0.25);
+            border: 3px solid #d81b60;
+            z-index: 2;
+            background: linear-gradient(145deg, #ffffff 0%, #ffe6ee 100%);
+        }
 
         .img-circle-container {
-            width: 110px;
-            height: 110px;
-            background-color: #800000;
+            width: 125px;
+            height: 125px;
+            background: linear-gradient(135deg, #800000 0%, #d81b60 100%);
             border-radius: 50%;
-            margin: -65px auto 10px auto;
+            margin: -75px auto 15px auto;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 4px solid #fff;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            border: 5px solid #fff;
+            box-shadow: 0 8px 20px rgba(128,0,0,0.2);
+            transition: transform 0.3s ease;
         }
+
+        .card.active .img-circle-container {
+            transform: scale(1.05);
+        }
+
         .card img { 
             width: 85%; 
             height: 85%; 
             object-fit: cover; 
-            border-radius: 8px;
+            border-radius: 12px;
         }
 
         .card-body { 
-            padding: 0 0 10px 0; 
+            padding: 0 0 15px 0; 
             position: relative; 
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .card-title { 
-            font-size: 1rem; 
-            color: #600000; 
-            font-weight: 700; 
-            min-height: 38px; 
+            font-size: 1.1rem; 
+            color: #800000; 
+            font-weight: 800; 
+            line-height: 1.35;
         }
 
         .card-desc { 
@@ -348,40 +370,55 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
 
         .heart-icon {
             position: absolute;
-            right: 0;
-            top: 0;
-            color: #800000;
-            font-size: 1.1rem;
+            right: 2px;
+            top: 2px;
+            color: #d81b60;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.8);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
         }
 
         .card-footer-flex {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 2px dashed rgba(216, 27, 96, 0.2);
         }
 
         .card-price { 
-            font-size: 1.2rem; 
+            font-size: 1.3rem; 
             font-weight: 800; 
-            color: #800000; 
+            color: #d81b60; 
         }
 
         .btn-beli { 
-            background: #800000; 
+            background: linear-gradient(135deg, #d81b60 0%, #ad1457 100%); 
             color: white; 
             text-align: center; 
-            border-radius: 6px; 
+            border-radius: 12px; 
             text-decoration: none; 
             font-weight: bold; 
-            padding: 7px 16px;
-            font-size: 0.9rem;
+            padding: 9px 20px;
+            font-size: 1rem;
             letter-spacing: 1px;
             transition: 0.3s; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(216, 27, 96, 0.3);
         }
-        .btn-beli:hover { background: #500000; }
+        .btn-beli:hover { 
+            background: linear-gradient(135deg, #ad1457 0%, #800000 100%);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(216, 27, 96, 0.4);
+        }
         
-        footer { background: rgba(255, 182, 193, 0.9); color: #593539; text-align: center; padding: 15px; margin-top: 20px; font-size: 0.9rem; font-weight: 600; border-top: 1px solid rgba(255,255,255,0.6); }
+        footer { background: rgba(255, 182, 193, 0.9); color: #593539; text-align: center; padding: 15px; margin-top: auto; font-size: 0.9rem; font-weight: 600; border-top: 1px solid rgba(255,255,255,0.6); }
         
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-15px); }
@@ -423,7 +460,9 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 background: white;
             }
             nav.active { display: flex; }
-            .scroll-btn { display: none; }
+            .scroll-btn.left { left: -30px; width: 40px; height: 40px; font-size: 1.1rem; }
+            .scroll-btn.right { right: -30px; width: 40px; height: 40px; font-size: 1.1rem; }
+            .carousel-container { max-width: 280px; }
         }
     </style>
 </head>
@@ -481,82 +520,52 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
 
     <main>
         <div class="page-title">
-            <h2>VARIAN DAN HARGA</h2>
+            <h2>KATALOG PRODUK BINICE</h2>
         </div>
 
-        <!-- BARIS ATAS (KHUSUS LARGE) -->
-        <div class="row-section">
-            <div class="catalog-wrapper">
-                <button class="scroll-btn left" onclick="scrollRow('scrollContainer1', -300)">&#10094;</button>
-                <div class="scroll-container" id="scrollContainer1">
-                    <div class="grid-row">
-                        <?php 
-                        $query_large = mysqli_query($koneksi, "SELECT * FROM products WHERE ukuran = 'large' ORDER BY id DESC");
-                        while ($p = mysqli_fetch_assoc($query_large)): 
-                            $harga_tampil = ($p['harga'] >= 1000) ? ($p['harga'] / 1000) . 'K' : 'Rp ' . number_format($p['harga'], 0, ',', '.');
-                        ?>
-                        <div class="card">
-                            <div>
-                                <div class="img-circle-container">
-                                    <img src="<?= !empty($p['gambar']) ? 'img/' . htmlspecialchars($p['gambar']) : 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600' ?>" alt="<?= htmlspecialchars($p['nama']) ?>">
-                                </div>
-                                <div class="card-body">
-                                    <div class="card-title"><?= htmlspecialchars($p['nama']) ?></div>
-                                    <div class="heart-icon">♥</div>
-                                    <div class="card-desc"><?= htmlspecialchars($p['deskripsi']) ?></div>
-                                </div>
+        <!-- TAMPILAN CAROUSEL (DIMULAI DARI PRODUK TENGAH) -->
+        <div class="carousel-container">
+            <button class="scroll-btn left" onclick="slideCard(-1)">&#10094;</button>
+            
+            <div class="scroll-wrapper" id="scrollWrapper">
+                <div class="grid-row" id="gridRow">
+                    <?>
+                    <?php 
+                    $query_produk = mysqli_query($koneksi, "SELECT * FROM products ORDER BY id DESC");
+                    
+                    // Simpan data produk ke dalam array agar bisa dihitung jumlahnya
+                    $produk_array = [];
+                    while ($row = mysqli_fetch_assoc($query_produk)) {
+                        $produk_array[] = $row;
+                    }
+                    
+                    // Tentukan indeks produk awal tepat di tengah (jika produk genap/ganjil)
+                    $initial_index = floor(count($produk_array) / 2);
+
+                    foreach ($produk_array as $index => $p): 
+                        $harga_tampil = ($p['harga'] >= 1000) ? ($p['harga'] / 1000) . 'K' : 'Rp ' . number_format($p['harga'], 0, ',', '.');
+                    ?>
+                    <div class="card" data-index="<?= $index ?>">
+                        <div>
+                            <div class="img-circle-container">
+                                <img src="<?= !empty($p['gambar']) ? 'img/' . htmlspecialchars($p['gambar']) : 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600' ?>" alt="<?= htmlspecialchars($p['nama']) ?>">
                             </div>
-                            <div class="card-footer-flex">
-                                <div class="card-price"><?= $harga_tampil ?></div>
-                                <!-- Diarahkan ke detail_produk.php agar bisa pilih ukuran, cek stok & atur jumlah -->
-                                <a href="detail_produk.php?id=<?= $p['id'] ?>" class="btn-beli">+</a>
+                            <div class="card-body">
+                                <div class="card-title"><?= htmlspecialchars($p['nama']) ?></div>
+                                <div class="heart-icon">♥</div>
+                                <div class="card-desc"><?= htmlspecialchars($p['deskripsi']) ?></div>
                             </div>
                         </div>
-                        <?php endwhile; ?>
-                    </div>
-                </div>
-                <button class="scroll-btn right" onclick="scrollRow('scrollContainer1', 300)">&#10095;</button>
-            </div>
-        </div>
-
-        <!-- TEKS PEMISAH DI TENGAH -->
-        <div class="section-divider">
-            <h3>Ukuran Medium</h3>
-        </div>
-
-        <!-- BARIS BAWAH (KHUSUS MEDIUM) -->
-        <div class="row-section">
-            <div class="catalog-wrapper">
-                <button class="scroll-btn left" onclick="scrollRow('scrollContainer2', -300)">&#10094;</button>
-                <div class="scroll-container" id="scrollContainer2">
-                    <div class="grid-row">
-                        <?php 
-                        $query_medium = mysqli_query($koneksi, "SELECT * FROM products WHERE ukuran = 'medium' ORDER BY id DESC");
-                        while ($p = mysqli_fetch_assoc($query_medium)): 
-                            $harga_tampil = ($p['harga'] >= 1000) ? ($p['harga'] / 1000) . 'K' : 'Rp ' . number_format($p['harga'], 0, ',', '.');
-                        ?>
-                        <div class="card">
-                            <div>
-                                <div class="img-circle-container">
-                                    <img src="<?= !empty($p['gambar']) ? 'img/' . htmlspecialchars($p['gambar']) : 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600' ?>" alt="<?= htmlspecialchars($p['nama']) ?>">
-                                </div>
-                                <div class="card-body">
-                                    <div class="card-title"><?= htmlspecialchars($p['nama']) ?></div>
-                                    <div class="heart-icon">♥</div>
-                                    <div class="card-desc"><?= htmlspecialchars($p['deskripsi']) ?></div>
-                                </div>
-                            </div>
-                            <div class="card-footer-flex">
-                                <div class="card-price"><?= $harga_tampil ?></div>
-                                <!-- Diarahkan ke detail_produk.php agar bisa pilih ukuran, cek stok & atur jumlah -->
-                                <a href="detail_produk.php?id=<?= $p['id'] ?>" class="btn-beli">+</a>
-                            </div>
+                        <div class="card-footer-flex">
+                            <div class="card-price"><?= $harga_tampil ?></div>
+                            <a href="detail_produk.php?id=<?= $p['id'] ?>" class="btn-beli">+</a>
                         </div>
-                        <?php endwhile; ?>
                     </div>
+                    <?php endforeach; ?>
                 </div>
-                <button class="scroll-btn right" onclick="scrollRow('scrollContainer2', 300)">&#10095;</button>
             </div>
+
+            <button class="scroll-btn right" onclick="slideCard(1)">&#10095;</button>
         </div>
 
     </main>
@@ -566,19 +575,54 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
     </footer>
 
     <script>
-        function scrollRow(containerId, amount) {
-            document.getElementById(containerId).scrollBy({
-                left: amount,
-                behavior: 'smooth'
-            });
-        }
-
         const menuToggle = document.getElementById('menuToggle');
         const navMenu = document.getElementById('navMenu');
 
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
+        });
+
+        // Logika Carousel (Mulai dari Tengah & Desain Kotak Unik)
+        const cards = document.querySelectorAll('.card');
+        const gridRow = document.getElementById('gridRow');
+        
+        // Mulai indeks tepat di produk bagian tengah
+        let currentIndex = <?= $initial_index ?>;
+
+        function updateActiveCard() {
+            cards.forEach((card, index) => {
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            if (cards.length > 0) {
+                const cardWidth = cards[0].offsetWidth + 25; // Lebar kartu + gap
+                const offset = (gridRow.parentElement.offsetWidth / 2) - (cardWidth / 2) - (currentIndex * cardWidth);
+                gridRow.style.transform = `translateX(${offset}px)`;
+            }
+        }
+
+        function slideCard(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            } else if (currentIndex >= cards.length) {
+                currentIndex = cards.length - 1;
+            }
+            updateActiveCard();
+        }
+
+        // Jalankan saat halaman pertama kali dimuat agar langsung fokus di tengah
+        window.addEventListener('load', () => {
+            updateActiveCard();
+        });
+
+        window.addEventListener('resize', () => {
+            updateActiveCard();
         });
     </script>
 
