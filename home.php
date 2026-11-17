@@ -489,7 +489,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         <!-- Kartu Kelima Tambahan Baru -->
         <div class="feature-card" onclick="openModal('Crispy Biscuit', 'kawai.png', 'Lapisan biskuit gabin gurih di luar yang dipanggang dengan tingkat renyah sempurna, menciptakan kombinasi unik ice cream lumer dan biskuit yang renyah!')">
             <h3>Crispy Biscuit</h3>
-            <img src="kawai.png" alt="Crispy Biscuit" class="feature-img">
+            <img src="fto.png" alt="Crispy Biscuit" class="feature-img">
         </div>
     </section>
 
