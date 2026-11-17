@@ -12,7 +12,6 @@ session_start();
     <link rel="stylesheet" href="style.css">
     <style>
         body.intro-body {
-            
             background-image: url('betul.png');
             background-size: 100% 100%; 
             background-position: center;
@@ -26,6 +25,29 @@ session_start();
             overflow: hidden;
             margin: 0;
             font-family: 'Quicksand', sans-serif;
+        }
+
+        /* Wadah logo di pojok kiri atas */
+        .logo-container {
+            position: absolute;
+            top: 25px;
+            left: 8%;
+            z-index: 10;
+        }
+
+        /* Styling Logo Bulat dan Diperbesar Sedikit */
+        .logo-img {
+            width: 65px;  /* Lebar logo */
+            height: 65px; /* Tinggi logo (sama persis dengan width agar bulat sempurna) */
+            object-fit: cover; /* Memastikan gambar pas mengisi lingkaran tanpa gepeng */
+            border-radius: 50%; /* Membuat gambar jadi bulat */
+            border: 3px solid #fff; /* Bingkai putih tipis yang elegan */
+            box-shadow: 0 4px 15px rgba(128, 0, 0, 0.25); /* Efek bayangan lembut */
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.08); /* Efek membesar sedikit saat kursor diarahkan */
         }
 
         .intro-container {
@@ -83,17 +105,16 @@ session_start();
             animation: slideInRight 1s ease-out;
         }
 
-      .animasi-eskrim {
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 6px solid #fff;
-    box-shadow: 0 10px 30px rgba(128, 0, 0, 0.2);
-    animation: floatImage 3s ease-in-out infinite;
-    
-    margin-top: 50px;
-}
+        .animasi-eskrim {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            box-shadow: 0 10px 30px rgba(128, 0, 0, 0.2);
+            animation: floatImage 3s ease-in-out infinite;
+            margin-top: 50px;
+        }
 
         @keyframes floatImage {
             0% { transform: translateY(0px) rotate(0deg); }
@@ -160,6 +181,11 @@ session_start();
         }
 
         @media(max-width: 900px) {
+            .logo-container {
+                top: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
             .intro-container {
                 flex-direction: column-reverse;
                 text-align: center;
@@ -175,9 +201,12 @@ session_start();
 </head>
 <body class="intro-body">
 
-    <header style="background: transparent; box-shadow: none; position: absolute; width: 100%;">
-        <div class="logo" style="padding-left: 5%; color: #d63031;">🍦 GABIN ES KRIM</div>
-    </header>
+    <!-- Logo Bulat di Pojok Kiri Atas -->
+    <div class="logo-container">
+        <a href="home.php">
+            <img src="kawai.png" alt="Logo BinIce" class="logo-img">
+        </a>
+    </div>
 
     <div class="intro-container">
         <div class="intro-text">
@@ -194,7 +223,7 @@ session_start();
 
     <div class="running-text-container">
         <div class="running-text">
-            🌸 SELAMAT DATANG DI TOKO GABIN ES KRIM PASTEL! • 🍦 RENYAH DI LUAR, LUMER DI DALAM! • ✨ PILIHAN RASA STRAWBERRY, ANGGUR, MANGGA, MATCHA & COOKIES AND CREAM • 🚀 PESAN SEKARANG VIA DANA, GOPAY & COD!
+            🌸 SELAMAT DATANG DI TOKO GABIN ES KRIM BINICE! • 🍦 RENYAH DI LUAR, LUMER DI DALAM! • ✨ PILIHAN RASA STRAWBERRY, ANGGUR, MANGGA, MATCHA & COOKIES AND CREAM • 🚀 PESAN SEKARANG!
         </div>
     </div>
 

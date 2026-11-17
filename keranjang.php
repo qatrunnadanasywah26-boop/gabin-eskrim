@@ -21,7 +21,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
         /* Background Menggunakan Gambar Penuh Tanpa Terpotong */
-    body { 
+        body { 
             background-image: url('mt.jpeg');
             background-size: cover;
             background-position: center;
@@ -44,13 +44,34 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             z-index: 100;
         }
         
-        .logo { font-size: 1.8rem; font-weight: 800; color: #d81b60; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
+        /* Styling Logo Bulat Menggunakan kawai.png di Pojok Kiri Atas */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
 
-        /* Navigasi Utama Berbentuk Button / Kotak */
+        .logo-img {
+            width: 65px;  
+            height: 65px; 
+            object-fit: cover; 
+            border-radius: 50%; 
+            border: 3px solid #fff; 
+            box-shadow: 0 4px 15px rgba(128, 0, 0, 0.25); 
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.08);
+        }
+
+        /* Navigasi Utama Berbentuk Button / Kotak Diposisikan di Tengah */
         nav { 
             display: flex; 
             gap: 12px; 
             align-items: center; 
+            justify-content: center;
+            flex: 2;
         }
         nav a { 
             text-decoration: none; 
@@ -77,6 +98,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             gap: 15px; 
             font-size: 1.1rem; 
             align-items: center; 
+            justify-content: flex-end;
+            flex: 1;
         }
         
         /* Tombol Keranjang Berbentuk Button Jelas */
@@ -180,8 +203,9 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media(max-width: 768px) { 
-            header { padding: 15px 5%; } 
+        @media(max-width: 900px) { 
+            header { padding: 15px 5%; justify-content: space-between; } 
+            .logo-container, .nav-icons { flex: unset; }
             .nav-icons { display: none; }
             .menu-toggle { display: flex; }
             .mobile-auth {
@@ -220,7 +244,12 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
 <body>
 
     <header>
-        <div class="logo">🍦 BinIce</div>
+        <!-- Logo Bulat Gambar (kawai.png) di Pojok Kiri Atas -->
+        <div class="logo-container">
+            <a href="home.php">
+                <img src="kawai.png" alt="Logo BinIce" class="logo-img">
+            </a>
+        </div>
         
         <!-- Tombol Garis Tiga (Hamburger Menu) -->
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">
