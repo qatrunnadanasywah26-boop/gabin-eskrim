@@ -46,6 +46,8 @@ $d_products = mysqli_fetch_assoc($q_products);
         .badge-cod { background: #2ed573; color: white; }
         .bukti-img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; cursor: pointer; transition: 0.3s; }
         .bukti-img:hover { transform: scale(2.2); }
+        .btn-bill-admin { display: inline-block; background: #0984e3; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.85rem; text-decoration: none; font-weight: bold; margin-bottom: 5px; }
+        .btn-bill-admin:hover { background: #74b9ff; }
     </style>
 </head>
 <body style="background: #f4f6f9;">
@@ -60,7 +62,7 @@ $d_products = mysqli_fetch_assoc($q_products);
         </div>
     </div>
 
-    <main>
+    <main style="padding: 20px 5%;">
         <h2>Dashboard Ringkasan</h2>
         <br>
 
@@ -83,18 +85,18 @@ $d_products = mysqli_fetch_assoc($q_products);
         <br>
         <!-- Pembungkus agar tabel rapi di HP -->
         <div class="table-responsive">
-            <table>
+            <table style="width: 100%; background: white; border-collapse: collapse; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tanggal</th>
-                        <th>Pelanggan</th>
-                        <th>WhatsApp</th>
-                        <th>Alamat</th>
-                        <th>Rincian</th>
-                        <th>Metode & Bukti</th>
-                        <th>Total</th>
-                        <th>Aksi</th>
+                    <tr style="background: #f1f2f6; text-align: left;">
+                        <th style="padding: 12px;">ID</th>
+                        <th style="padding: 12px;">Tanggal</th>
+                        <th style="padding: 12px;">Pelanggan</th>
+                        <th style="padding: 12px;">WhatsApp</th>
+                        <th style="padding: 12px;">Alamat</th>
+                        <th style="padding: 12px;">Rincian</th>
+                        <th style="padding: 12px;">Metode & Bukti</th>
+                        <th style="padding: 12px;">Total</th>
+                        <th style="padding: 12px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,18 +105,18 @@ $d_products = mysqli_fetch_assoc($q_products);
                     if (mysqli_num_rows($orders) == 0):
                     ?>
                     <tr>
-                        <td colspan="9" style="text-align: center;">Belum ada pesanan masuk.</td>
+                        <td colspan="9" style="text-align: center; padding: 20px;">Belum ada pesanan masuk.</td>
                     </tr>
                     <?php else: ?>
                         <?php while ($o = mysqli_fetch_assoc($orders)): ?>
-                        <tr>
-                            <td>#<?= $o['id'] ?></td>
-                            <td><small><?= date('d/m/Y H:i', strtotime($o['created_at'])) ?></small></td>
-                            <td><strong><?= htmlspecialchars($o['nama_pelanggan']) ?></strong></td>
-                            <td><a href="https://wa.me/<?= $o['whatsapp'] ?>" target="_blank" style="color:#00b894; font-weight:bold;"><?= htmlspecialchars($o['whatsapp']) ?></a></td>
-                            <td><small><?= htmlspecialchars($o['alamat']) ?></small></td>
-                            <td><pre style="font-family: inherit; font-size: 0.85rem; margin: 0;"><?= htmlspecialchars($o['rincian_pesanan']) ?></pre></td>
-                            <td>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px;">#<?= $o['id'] ?></td>
+                            <td style="padding: 12px;"><small><?= date('d/m/Y H:i', strtotime($o['created_at'])) ?></small></td>
+                            <td style="padding: 12px;"><strong><?= htmlspecialchars($o['nama_pelanggan']) ?></strong></td>
+                            <td style="padding: 12px;"><a href="https://wa.me/<?= $o['whatsapp'] ?>" target="_blank" style="color:#00b894; font-weight:bold;"><?= htmlspecialchars($o['whatsapp']) ?></a></td>
+                            <td style="padding: 12px;"><small><?= htmlspecialchars($o['alamat']) ?></small></td>
+                            <td style="padding: 12px;"><pre style="font-family: inherit; font-size: 0.85rem; margin: 0;"><?= htmlspecialchars($o['rincian_pesanan']) ?></pre></td>
+                            <td style="padding: 12px;">
                                 <?php 
                                 $m = strtolower($o['metode_pembayaran']);
                                 $badgeClass = $m == 'dana' ? 'badge-dana' : ($m == 'gopay' ? 'badge-gopay' : 'badge-cod');
@@ -127,9 +129,11 @@ $d_products = mysqli_fetch_assoc($q_products);
                                     </a>
                                 <?php endif; ?>
                             </td>
-                            <td style="font-weight: bold; color: #ff5252;">Rp <?= number_format($o['total_harga'], 0, ',', '.') ?></td>
-                            <td>
-                                <a href="admin_dashboard.php?hapus_order=<?= $o['id'] ?>" onclick="return confirm('Yakin ingin menghapus pesanan ini?')" style="color: red; font-weight: bold; text-decoration: none;">Hapus</a>
+                            <td style="padding: 12px; font-weight: bold; color: #ff5252;">Rp <?= number_format($o['total_harga'], 0, ',', '.') ?></td>
+                            <td style="padding: 12px;">
+                                <!-- Tombol Lihat Bill -->
+                                <a href="bill.php?id=<?= $o['id'] ?>" target="_blank" class="btn-bill-admin">📄 Lihat Bill</a><br>
+                                <a href="admin_dashboard.php?hapus_order=<?= $o['id'] ?>" onclick="return confirm('Yakin ingin menghapus pesanan ini?')" style="color: red; font-weight: bold; text-decoration: none; font-size: 0.9rem;">Hapus</a>
                             </td>
                         </tr>
                         <?php endwhile; ?>

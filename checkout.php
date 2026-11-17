@@ -9,6 +9,7 @@ if (empty($_SESSION['keranjang'])) {
 
 $error = "";
 $sukses_checkout = false;
+$id_order_baru = 0;
 
 // Harga fix sesuai ketentuan
 $harga_large = 11000;
@@ -70,6 +71,7 @@ if (isset($_POST['proses_checkout'])) {
                          VALUES ('$nama', '$whatsapp', '$alamat', '$metode', '$total_harga', '$rincian_pesanan', '$bukti_nama', NOW())";
         
         if (mysqli_query($koneksi, $query_insert)) {
+            $id_order_baru = mysqli_insert_id($koneksi); // Ambil ID pesanan yang baru dibuat
             
             // --- PENGURANGAN STOK SPESIFIK BERDASARKAN UKURAN ---
             foreach ($_SESSION['keranjang'] as $id => $arr_ukuran) {
@@ -153,11 +155,12 @@ if (isset($_SESSION['keranjang'])) {
             setTimeout(function() {
                 var spinner = document.getElementById('spinnerIcon');
                 if(spinner) spinner.style.display = 'none';
-                document.getElementById('loadingText').innerHTML = "Pesananmu berhasil dibuat! 🎉✨";
+                document.getElementById('loadingText').innerHTML = "Pesanan berhasil! Menyiapkan Bill... 🎉✨";
             }, 1500);
 
+            // Langsung arahkan ke halaman bill.php dengan membawa ID pesanannya
             setTimeout(function() {
-                window.location.href = 'produk.php';
+                window.location.href = 'bill.php?id=<?= $id_order_baru ?>';
             }, 3000);
         </script>
     <?php endif; ?>

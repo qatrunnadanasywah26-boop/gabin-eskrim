@@ -12,11 +12,12 @@ if (!$order) {
     exit;
 }
 
-// Format nomor WhatsApp admin/toko (ganti dengan nomor WhatsApp kamu, awali dengan 62 tanpa angka 0 di depan)
-$nomor_admin = "6281234567890"; 
+// Nomor WhatsApp admin (sesuaikan nomornya di sini, awali dengan 62 tanpa angka 0 di depan)
+$nomor_admin_wa = "6281234567890"; 
+$nomor_admin_tampil = "0812-3456-7890"; // Format rapi untuk dibaca
 
 // Susun teks pesan otomatis untuk WhatsApp
-$pesan_wa = "Halo Admin BinIce, saya ingin konfirmasi pesanan baru:\n\n" .
+$pesan_wa = "Halo Admin BinIce, saya ingin mengonfirmasi pesanan baru:\n\n" .
             "No. Pesanan: #{$order['id']}\n" .
             "Nama: {$order['nama_pelanggan']}\n" .
             "No. WhatsApp: {$order['whatsapp']}\n" .
@@ -24,9 +25,9 @@ $pesan_wa = "Halo Admin BinIce, saya ingin konfirmasi pesanan baru:\n\n" .
             "Metode Pembayaran: {$order['metode_pembayaran']}\n\n" .
             "Rincian Pesanan:\n{$order['rincian_pesanan']}\n" .
             "Total Harga: Rp " . number_format($order['total_harga'], 0, ',', '.') . "\n\n" .
-            "Bukti pembayaran sudah saya unggah di web. Mohon segera diproses ya kak, terima kasih! 🍦✨";
+            "Bukti transfer dan bill sudah saya lampirkan. Mohon segera diproses ya kak, terima kasih! 🍦✨";
 
-$link_wa = "https://wa.me/" . $nomor_admin . "?text=" . urlencode($pesan_wa);
+$link_wa = "https://wa.me/" . $nomor_admin_wa . "?text=" . urlencode($pesan_wa);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -50,6 +51,7 @@ $link_wa = "https://wa.me/" . $nomor_admin . "?text=" . urlencode($pesan_wa);
         .bill-details strong { color: #880e4f; }
         .rincian-box { background: white; border: 1px dashed #f8bbd0; padding: 12px; border-radius: 10px; margin-top: 10px; white-space: pre-line; font-size: 0.9rem; color: #555; }
         .bukti-img { width: 150px; height: 150px; object-fit: cover; border-radius: 10px; border: 2px solid #f8bbd0; margin-top: 10px; }
+        .instruction-box { background: #ffebee; border: 1px dashed #d81b60; padding: 12px; border-radius: 10px; margin-bottom: 20px; font-size: 0.9rem; color: #c2185b; text-align: center; font-weight: bold; }
         .btn-wa { display: block; width: 100%; background: #25d366; color: white; padding: 14px; border-radius: 25px; text-decoration: none; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: 0.3s; font-size: 1rem; margin-top: 15px; }
         .btn-wa:hover { background: #1ebe5d; }
         .btn-home { display: block; width: 100%; background: #636e72; color: white; padding: 12px; border-radius: 25px; text-decoration: none; font-weight: bold; text-align: center; margin-top: 10px; }
@@ -70,7 +72,11 @@ $link_wa = "https://wa.me/" . $nomor_admin . "?text=" . urlencode($pesan_wa);
     <main>
         <div class="bill-card">
             <h2>🎉 Pesanan Berhasil Dibuat!</h2>
-            <p class="bill-sub">Simpan atau kirimkan bill ini ke WhatsApp admin untuk konfirmasi.</p>
+            <p class="bill-sub">Simpan struk bill ini untuk proses verifikasi pesanan.</p>
+
+            <div class="instruction-box">
+                ⚠️ Wajib kirim/screenshot bill ini beserta bukti transfer ke WhatsApp Admin (<strong><?= $nomor_admin_tampil ?></strong>) agar pesanan dapat segera diproses!
+            </div>
 
             <div class="bill-details">
                 <p><strong>No. Pesanan:</strong> #<?= $order['id'] ?></p>
@@ -97,7 +103,7 @@ $link_wa = "https://wa.me/" . $nomor_admin . "?text=" . urlencode($pesan_wa);
                 <?php endif; ?>
             </div>
 
-            <a href="<?= $link_wa ?>" target="_blank" class="btn-wa">📱 Kirim Bill ke WhatsApp Admin ➔</a>
+            <a href="<?= $link_wa ?>" target="_blank" class="btn-wa">📱 Kirim Bill ke WhatsApp Admin (<?= $nomor_admin_tampil ?>) ➔</a>
             <a href="produk.php" class="btn-home">🏠 Kembali ke Beranda Produk</a>
         </div>
     </main>
