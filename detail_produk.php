@@ -12,30 +12,41 @@ if (!$p) {
 }
 
 // Menetapkan harga pasti sesuai permintaan: Medium 6rb, Large 11rb 
-// (Atau jika di database harga dasarnya sudah Large, kita jadikan acuan)
-$harga_large = intval($p['harga']); // Harga dari database (biasanya Large)
-$harga_medium = 6000; // Harga Medium fix Rp 6.000
+$harga_large = intval($p['harga']); 
+$harga_medium = 6000; 
 
-// Proses ketika tombol "Tambah ke Keranjang" ditekan dari halaman detail
+// Ambil stok dari kolom database yang baru
+$stok_large_tersedia = intval($p['stok_large']);
+$stok_medium_tersedia = intval($p['stok_medium']);
+
+// Proses ketika tombol "Tambah ke Keranjang" ditekan
 if (isset($_POST['tambah_keranjang'])) {
     $jumlah_beli = intval($_POST['jumlah']);
-    $pilihan_ukuran = $_POST['ukuran_dipilih'];
+    $pilihan_ukuran = $_POST['ukuran_dipilih']; // 'large' atau 'medium'
     
-    // Validasi stok
-    if ($jumlah_beli > $p['stok']) {
-        $error = "Jumlah pembelian melebihi stok yang tersedia (Stok: " . $p['stok'] . ")";
+    $stok_tersedia = ($pilihan_ukuran == 'medium') ? $stok_medium_tersedia : $stok_large_tersedia;
+
+    if ($jumlah_beli > $stok_tersedia) {
+        $error = "Jumlah pembelian melebihi stok ukuran " . ucfirst($pilihan_ukuran) . " yang tersedia (Stok: " . $stok_tersedia . ")";
     } else {
-        if (isset($_SESSION['keranjang'][$id])) {
-            $_SESSION['keranjang'][$id] += $jumlah_beli;
+        if (isset($_SESSION['keranjang'][$id][$pilihan_ukuran])) {
+            $_SESSION['keranjang'][$id][$pilihan_ukuran] += $jumlah_beli;
         } else {
-            $_SESSION['keranjang'][$id] = $jumlah_beli;
+            $_SESSION['keranjang'][$id][$pilihan_ukuran] = $jumlah_beli;
         }
         header("Location: keranjang.php");
         exit;
     }
 }
 
-$total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjang']) : 0;
+$total_keranjang = 0;
+if (isset($_SESSION['keranjang'])) {
+    foreach ($_SESSION['keranjang'] as $prod_id => $arr_uk) {
+        foreach ($arr_uk as $uk => $jml) {
+            $total_keranjang += $jml;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -45,84 +56,30 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
     <title>Detail Produk - <?= htmlspecialchars($p['nama']) ?></title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { 
-            background-color: #fce4ec; 
-            color: #593539; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-        }
-        header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 20px 8%; 
-            background: transparent; 
-        }
+        body { background-color: #fce4ec; color: #593539; min-height: 100vh; display: flex; flex-direction: column; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: transparent; }
         .logo { font-size: 1.8rem; font-weight: 800; color: #d81b60; letter-spacing: 1px; }
         nav { display: flex; gap: 12px; align-items: center; }
-        nav a { 
-            text-decoration: none; color: #593539; font-weight: 600; font-size: 0.95rem; 
-            padding: 8px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(216, 27, 96, 0.2); transition: 0.3s; 
-        }
+        nav a { text-decoration: none; color: #593539; font-weight: 600; font-size: 0.95rem; padding: 8px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(216, 27, 96, 0.2); transition: 0.3s; }
         nav a:hover, nav a.active { background: #d81b60; color: white; border-color: #d81b60; }
-        
         main { flex: 1; padding: 30px 8%; max-width: 900px; margin: 0 auto; width: 100%; }
-        
-        .product-detail-card {
-            background: white;
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 10px 25px rgba(216, 27, 96, 0.08);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .product-img-box {
-            width: 100%;
-            height: 320px;
-            background: #800000;
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .product-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .product-detail-card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 25px rgba(216, 27, 96, 0.08); display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
+        .product-img-box { width: 100%; height: 320px; background: #800000; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .product-img-box img { width: 100%; height: 100%; object-fit: cover; }
         .product-info h2 { color: #800000; font-size: 1.8rem; margin-bottom: 10px; }
         .price { font-size: 1.5rem; font-weight: 800; color: #d81b60; margin-bottom: 15px; }
         .stock-info { font-size: 0.95rem; color: #666; margin-bottom: 15px; font-weight: bold; }
         .desc { font-size: 0.95rem; color: #555; margin-bottom: 20px; line-height: 1.5; }
-
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #880e4f; font-size: 0.9rem; }
-        .form-group select, .form-group input {
-            width: 100%; padding: 10px; border: 1px solid #f8bbd0; border-radius: 10px; font-size: 1rem; background: #fff9fa;
-        }
-
-        .btn-add {
-            display: block; width: 100%; background: #d81b60; color: white; padding: 12px;
-            border-radius: 25px; text-align: center; font-weight: bold; border: none; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3); transition: 0.3s; font-size: 1rem; margin-top: 15px;
-        }
+        .form-group select, .form-group input { width: 100%; padding: 10px; border: 1px solid #f8bbd0; border-radius: 10px; font-size: 1rem; background: #fff9fa; }
+        .btn-add { display: block; width: 100%; background: #d81b60; color: white; padding: 12px; border-radius: 25px; text-align: center; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3); transition: 0.3s; font-size: 1rem; margin-top: 15px; }
         .btn-add:hover { background: #ad1457; }
         .error-msg { background: #ffebee; color: #c62828; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; }
-
-        @media(max-width: 768px) {
-            .product-detail-card { grid-template-columns: 1fr; }
-        }
+        @media(max-width: 768px) { .product-detail-card { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
     <header>
         <div class="logo">🍦 BinIce</div>
         <nav>
@@ -132,67 +89,65 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             <a href="contact.php">Contact</a>
         </nav>
     </header>
-
     <main>
         <?php if (!empty($error)): ?>
             <div class="error-msg"><?= $error ?></div>
         <?php endif; ?>
-
         <div class="product-detail-card">
             <div class="product-img-box">
                 <img src="<?= !empty($p['gambar']) ? 'img/' . htmlspecialchars($p['gambar']) : 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600' ?>" alt="<?= htmlspecialchars($p['nama']) ?>">
             </div>
-
             <div class="product-info">
                 <h2><?= htmlspecialchars($p['nama']) ?></h2>
-                <!-- Harga awal disesuaikan dengan ukuran default produk -->
-                <div class="price" id="textHarga">Rp <?= number_format(($p['ukuran'] == 'medium') ? $harga_medium : $harga_large, 0, ',', '.') ?></div>
-                <div class="stock-info">📦 Stok Tersedia: <strong><?= $p['stok'] ?> pcs</strong></div>
-                <div class="desc"><?= nl2br(htmlspecialchars($p['deskripsi'])) ?></div>
-
+                <div class="price" id="textHarga">Rp <?= number_format($harga_large, 0, ',', '.') ?></div>
+                <div class="stock-info">📦 Stok Tersedia: <strong id="textStok"><?= $stok_large_tersedia ?> pcs</strong></div>
+                <div class="desc"><?= nl2br(htmlspecialchars($p['deskripsi'] ?? 'Renyahnya gabin di setiap gigitan')) ?></div>
                 <form method="POST">
                     <div class="form-group">
                         <label>Pilih Ukuran Varian</label>
                         <select name="ukuran_dipilih" id="pilihUkuran" required>
-                            <option value="large" <?= ($p['ukuran'] == 'large') ? 'selected' : '' ?>>Large (Rp 11.000)</option>
-                            <option value="medium" <?= ($p['ukuran'] == 'medium') ? 'selected' : '' ?>>Medium (Rp 6.000)</option>
+                            <option value="large">Large (Rp 11.000)</option>
+                            <option value="medium">Medium (Rp 6.000)</option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label>Jumlah Beli</label>
-                        <input type="number" name="jumlah" value="1" min="1" max="<?= $p['stok'] ?>" required>
+                        <input type="number" name="jumlah" value="1" min="1" max="<?= $stok_large_tersedia ?>" id="inputJumlah" required>
                     </div>
-
                     <button type="submit" name="tambah_keranjang" class="btn-add">🛒 Masukkan ke Keranjang</button>
                 </form>
             </div>
         </div>
     </main>
-
     <footer style="background: #ad1457; color: white; text-align: center; padding: 20px; margin-top: auto;">
         <p>&copy; <?= date('Y') ?> BinIce. Semua Hak Dilindungi.</p>
     </footer>
-
     <script>
-        // Harga fix sesuai permintaan kamu: Large 11rb, Medium 6rb
-        const hargaLarge = 11000;
-        const hargaMedium = 6000;
+        const hargaLarge = <?= $harga_large ?>;
+        const hargaMedium = <?= $harga_medium ?>;
+        const stokLarge = <?= $stok_large_tersedia ?>;
+        const stokMedium = <?= $stok_medium_tersedia ?>;
 
         const selectUkuran = document.getElementById('pilihUkuran');
         const textHarga = document.getElementById('textHarga');
+        const textStok = document.getElementById('textStok');
+        const inputJumlah = document.getElementById('inputJumlah');
 
         function formatRupiah(angka) {
             return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        // Ubah harga secara otomatis saat ukuran dipilih
         selectUkuran.addEventListener('change', function() {
             if (this.value === 'large') {
                 textHarga.textContent = formatRupiah(hargaLarge);
+                textStok.textContent = stokLarge + ' pcs';
+                inputJumlah.max = stokLarge;
             } else if (this.value === 'medium') {
                 textHarga.textContent = formatRupiah(hargaMedium);
+                textStok.textContent = stokMedium + ' pcs';
+                inputJumlah.max = stokMedium;
             }
+            inputJumlah.value = 1;
         });
     </script>
 </body>

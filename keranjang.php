@@ -2,14 +2,34 @@
 session_start();
 include 'koneksi.php';
 
-if (isset($_GET['hapus'])) {
-    $id_hapus = $_GET['hapus'];
-    unset($_SESSION['keranjang'][$id_hapus]);
+// Harga fix sesuai ketentuan
+$harga_medium = 6000;
+
+// Logika Hapus item dari keranjang berdasarkan ID dan Ukuran
+if (isset($_GET['hapus_id']) && isset($_GET['ukuran'])) {
+    $id_hapus = $_GET['hapus_id'];
+    $ukuran_hapus = $_GET['ukuran'];
+    
+    unset($_SESSION['keranjang'][$id_hapus][$ukuran_hapus]);
+    
+    // Jika array ukuran kosong, hapus indeks ID produknya
+    if (empty($_SESSION['keranjang'][$id_hapus])) {
+        unset($_SESSION['keranjang'][$id_hapus]);
+    }
+    
     header('Location: keranjang.php');
     exit;
 }
 
-$total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjang']) : 0;
+// Hitung total item di keranjang untuk badge navbar
+$total_keranjang = 0;
+if (isset($_SESSION['keranjang'])) {
+    foreach ($_SESSION['keranjang'] as $id => $arr_ukuran) {
+        foreach ($arr_ukuran as $ukuran => $jumlah) {
+            $total_keranjang += $jumlah;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -20,7 +40,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
-        /* Background Menggunakan Gambar Penuh Tanpa Terpotong */
         body { 
             background-image: url('mt.jpeg');
             background-size: cover;
@@ -44,7 +63,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             z-index: 100;
         }
         
-        /* Styling Logo Bulat Menggunakan kawai.png di Pojok Kiri Atas */
         .logo-container {
             display: flex;
             align-items: center;
@@ -65,7 +83,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             transform: scale(1.08);
         }
 
-        /* Navigasi Utama Berbentuk Button / Kotak Diposisikan di Tengah */
         nav { 
             display: flex; 
             gap: 12px; 
@@ -92,7 +109,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             transform: translateY(-2px);
         }
 
-        /* Bagian Icon Kanan (Keranjang & Login) */
         .nav-icons { 
             display: flex; 
             gap: 15px; 
@@ -102,7 +118,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             flex: 1;
         }
         
-        /* Tombol Keranjang Berbentuk Button Jelas */
         .cart-btn {
             display: inline-flex;
             align-items: center;
@@ -132,7 +147,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             font-weight: bold; 
         }
 
-        /* Tombol Login / Admin Desktop */
         .nav-auth-desktop a {
             text-decoration: none;
             font-size: 0.9rem;
@@ -150,7 +164,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             transform: translateY(-2px);
         }
 
-        /* Tombol Hamburger (Garis Tiga) */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -196,6 +209,18 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         .btn-secondary { background: #f8bbd0; color: #880e4f; }
         .btn-secondary:hover { background: #f48fb1; }
         
+        .badge-ukuran {
+            display: inline-block;
+            background: #fce4ec;
+            color: #d81b60;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 6px;
+            border: 1px solid rgba(216,27,96,0.3);
+        }
+
         footer { background: rgba(173, 20, 87, 0.85); backdrop-filter: blur(5px); color: white; text-align: center; padding: 20px; margin-top: auto; font-size: 0.9rem; }
         
         @keyframes slideDown {
@@ -244,14 +269,12 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
 <body>
 
     <header>
-        <!-- Logo Bulat Gambar (kawai.png) di Pojok Kiri Atas -->
         <div class="logo-container">
             <a href="home.php">
                 <img src="kawai.png" alt="Logo BinIce" class="logo-img">
             </a>
         </div>
         
-        <!-- Tombol Garis Tiga (Hamburger Menu) -->
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">
             <span></span>
             <span></span>
@@ -264,7 +287,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             <a href="keranjang.php" class="active">Keranjang</a>
             <a href="contact.php">Contact</a>
             
-            <!-- Menu tambahan khusus versi HP (masuk dalam dropdown garis 3) -->
             <div class="mobile-auth">
                 <a href="keranjang.php" style="background: #fff; color: #d81b60; font-weight: bold;">
                     🛒 Keranjang <span class="cart-badge"><?= $total_keranjang ?></span>
@@ -277,7 +299,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             </div>
         </nav>
 
-        <!-- Tampilan Icon / Tombol di Desktop -->
         <div class="nav-icons">
             <a href="keranjang.php" class="cart-btn" title="Keranjang">
                 🛒 Keranjang <span class="cart-badge"><?= $total_keranjang ?></span>
@@ -307,7 +328,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                     <thead>
                         <tr>
                             <th>Produk</th>
-                            <th>Harga</th>
+                            <th>Harga Satuan</th>
                             <th>Jumlah</th>
                             <th>Subtotal</th>
                             <th>Aksi</th>
@@ -316,20 +337,32 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                     <tbody>
                         <?php 
                         $total_bayar = 0;
-                        foreach ($_SESSION['keranjang'] as $id => $jumlah): 
+                        foreach ($_SESSION['keranjang'] as $id => $arr_ukuran):
                             $query = mysqli_query($koneksi, "SELECT * FROM products WHERE id = '$id'");
                             $p = mysqli_fetch_assoc($query);
-                            $subtotal = $p['harga'] * $jumlah;
-                            $total_bayar += $subtotal;
+                            
+                            if (!$p) continue;
+
+                            foreach ($arr_ukuran as $ukuran => $jumlah):
+                                // Tentukan harga berdasarkan ukuran
+                                $harga_satuan = ($ukuran == 'medium') ? $harga_medium : intval($p['harga']);
+                                $subtotal = $harga_satuan * $jumlah;
+                                $total_bayar += $subtotal;
                         ?>
                         <tr>
-                            <td><strong><?= htmlspecialchars($p['nama']) ?></strong></td>
-                            <td>Rp <?= number_format($p['harga'], 0, ',', '.') ?></td>
+                            <td>
+                                <strong><?= htmlspecialchars($p['nama']) ?></strong>
+                                <span class="badge-ukuran"><?= ucfirst($ukuran) ?></span>
+                            </td>
+                            <td>Rp <?= number_format($harga_satuan, 0, ',', '.') ?></td>
                             <td><?= $jumlah ?></td>
                             <td>Rp <?= number_format($subtotal, 0, ',', '.') ?></td>
-                            <td><a href="keranjang.php?hapus=<?= $id ?>" style="color: #d81b60; font-weight: bold; text-decoration: none;">BATAL</a></td>
+                            <td><a href="keranjang.php?hapus_id=<?= $id ?>&ukuran=<?= $ukuran ?>" style="color: #d81b60; font-weight: bold; text-decoration: none;">BATAL</a></td>
                         </tr>
-                        <?php endforeach; ?>
+                        <?php 
+                            endforeach;
+                        endforeach; 
+                        ?>
                         <tr>
                             <td colspan="3" style="text-align: right; font-weight: bold; font-size: 1.1rem;">Total Bayar:</td>
                             <td colspan="2" style="font-weight: bold; color: #d81b60; font-size: 1.2rem;">Rp <?= number_format($total_bayar, 0, ',', '.') ?></td>
