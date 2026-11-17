@@ -106,8 +106,8 @@ if (isset($_SESSION['keranjang'])) {
                     <div class="form-group">
                         <label>Pilih Ukuran Varian</label>
                         <select name="ukuran_dipilih" id="pilihUkuran" required>
-                            <option value="large">Large (Rp 11.000)</option>
-                            <option value="medium">Medium (Rp 6.000)</option>
+                            <option value="large">Large</option>
+                            <option value="medium">Medium</option>
                         </select>
                     </div>
                     <div class="form-group">

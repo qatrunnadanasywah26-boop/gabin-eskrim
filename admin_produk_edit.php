@@ -11,16 +11,22 @@ if (!$p) {
     exit;
 }
 
+// Definisikan harga dari database (atau set default jika belum ada)
+$harga_large_db = isset($p['harga']) ? intval($p['harga']) : 11000;
+$harga_medium_db = 6000; // Harga medium tetap 6000 atau bisa disesuaikan
+
+$stok_large_db = isset($p['stok_large']) ? intval($p['stok_large']) : 0;
+$stok_medium_db = isset($p['stok_medium']) ? intval($p['stok_medium']) : 0;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama      = mysqli_real_escape_string($koneksi, $_POST['nama']);
     $harga     = intval($_POST['harga']);
-    $stok      = intval($_POST['stok']); // Menangkap input stok baru
+    $stok      = intval($_POST['stok']); 
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
-    $ukuran    = mysqli_real_escape_string($koneksi, $_POST['ukuran']);
+    $ukuran    = mysqli_real_escape_string($koneksi, $_POST['ukuran']); 
     
-    $nama_gambar = $p['gambar']; // Default pakai gambar lama
+    $nama_gambar = $p['gambar']; 
 
-    // Cek apakah admin mengupload file gambar baru
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === 0) {
         $ekstensi_boleh = ['jpg', 'jpeg', 'png', 'webp'];
         $nama_file_asli = $_FILES['gambar']['name'];
@@ -29,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ekstensi       = strtolower(pathinfo($nama_file_asli, PATHINFO_EXTENSION));
 
         if (in_array($ekstensi, $ekstensi_boleh)) {
-            if ($ukuran_file <= 2 * 1024 * 1024) { // Maksimal 2MB
+            if ($ukuran_file <= (2 * 1024 * 1024)) {
                 $nama_gambar = time() . '_' . rand(100, 999) . '.' . $ekstensi;
                 
                 if (!is_dir('img')) {
@@ -41,8 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Update data produk beserta stok ke database
-    $update = "UPDATE products SET nama='$nama', harga='$harga', stok='$stok', gambar='$nama_gambar', deskripsi='$deskripsi', ukuran='$ukuran' WHERE id='$id'";
+    // Update data berdasarkan ukuran yang dipilih admin saat form dikirim
+    if ($ukuran == 'medium') {
+        $update = "UPDATE products SET nama='$nama', stok_medium='$stok', gambar='$nama_gambar', deskripsi='$deskripsi' WHERE id='$id'";
+    } else {
+        // Jika large, update harga dan stok large-nya
+        $update = "UPDATE products SET nama='$nama', harga='$harga', stok_large='$stok', gambar='$nama_gambar', deskripsi='$deskripsi' WHERE id='$id'";
+    }
+
     if (mysqli_query($koneksi, $update)) {
         header("Location: admin_produk.php");
         exit;
@@ -85,22 +97,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label>Harga (Rp)</label>
-                    <input type="number" name="harga" value="<?= $p['harga'] ?>" required>
-                </div>
-
-                <!-- Input Stok Produk yang Dapat Diedit Admin -->
-                <div class="form-group">
-                    <label>Stok Produk</label>
-                    <input type="number" name="stok" value="<?= isset($p['stok']) ? $p['stok'] : 0 ?>" required min="0">
+                    <label id="labelHarga">Harga (Rp)</label>
+                    <input type="number" name="harga" id="inputHarga" value="<?= $harga_large_db ?>" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Pilih Ukuran / Baris Katalog</label>
-                    <select name="ukuran" required>
-                        <option value="large" <?= ($p['ukuran'] == 'large') ? 'selected' : '' ?>>Large (Masuk Baris Atas)</option>
-                        <option value="medium" <?= ($p['ukuran'] == 'medium') ? 'selected' : '' ?>>Medium (Masuk Baris Bawah)</option>
+                    <label>Pilih Ukuran yang Ingin Diatur</label>
+                    <select name="ukuran" id="pilihUkuran" required onchange="ubahUkuranAdmin()">
+                        <option value="large">Large</option>
+                        <option value="medium">Medium</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label id="labelStok">Stok Produk</label>
+                    <input type="number" name="stok" id="inputStok" value="<?= $stok_large_db ?>" required min="0">
                 </div>
 
                 <div class="form-group">
@@ -120,5 +131,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
+    <script>
+        const hargaLarge = <?= $harga_large_db ?>;
+        const hargaMedium = <?= $harga_medium_db ?>;
+        
+        const stokLarge = <?= $stok_large_db ?>;
+        const stokMedium = <?= $stok_medium_db ?>;
+
+        function ubahUkuranAdmin() {
+            const pilihan = document.getElementById('pilihUkuran').value;
+            const inputStok = document.getElementById('inputStok');
+            const labelStok = document.getElementById('labelStok');
+            const inputHarga = document.getElementById('inputHarga');
+            const labelHarga = document.getElementById('labelHarga');
+
+            if (pilihan === 'medium') {
+                inputStok.value = stokMedium;
+                labelStok.textContent = 'Stok Ukuran Medium';
+                
+                inputHarga.value = hargaMedium;
+                inputHarga.readOnly = true; // Medium harganya fix, jadi gak perlu diubah-ubah di sini
+                inputHarga.style.background = '#eee';
+                labelHarga.textContent = 'Harga Ukuran Medium (Fix)';
+            } else {
+                inputStok.value = stokLarge;
+                labelStok.textContent = 'Stok Ukuran Large';
+                
+                inputHarga.value = hargaLarge; // Pakai harga tersimpan dari database (misal udah diubah jadi 12000)
+                inputHarga.readOnly = false; // Large boleh diedit harganya
+                inputHarga.style.background = '#fff';
+                labelHarga.textContent = 'Harga Ukuran Large (Rp)';
+            }
+        }
+        ubahUkuranAdmin();
+    </script>
 </body>
 </html>

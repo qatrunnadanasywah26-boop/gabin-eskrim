@@ -121,6 +121,13 @@ if (isset($_SESSION['keranjang'])) {
         main { flex: 1; padding: 20px 8% 60px 8%; max-width: 800px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; justify-content: center; }
         h2 { color: #c2185b; margin-bottom: 25px; font-size: 2rem; }
         .form-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(216, 27, 96, 0.08); }
+        
+        /* Style untuk Ringkasan Pesanan */
+        .order-summary { background: #fff9fa; border: 1px solid #f8bbd0; border-radius: 12px; padding: 15px 20px; margin-bottom: 25px; }
+        .order-summary h3 { color: #880e4f; font-size: 1.1rem; margin-bottom: 12px; border-bottom: 1px solid #f8bbd0; padding-bottom: 8px; }
+        .summary-item { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; color: #593539; }
+        .summary-total { display: flex; justify-content: space-between; font-size: 1.05rem; font-weight: bold; color: #d81b60; border-top: 1px dashed #f8bbd0; padding-top: 10px; margin-top: 10px; }
+
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #880e4f; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid #f8bbd0; border-radius: 12px; font-size: 0.95rem; background: #fff9fa; }
@@ -176,6 +183,35 @@ if (isset($_SESSION['keranjang'])) {
         <?php endif; ?>
 
         <div class="form-container">
+            <!-- Kotak Ringkasan Pesanan -->
+            <div class="order-summary">
+                <h3>🛍️ Ringkasan Pesanan Kamu</h3>
+                <?php 
+                $grand_total = 0;
+                foreach ($_SESSION['keranjang'] as $id => $arr_ukuran) {
+                    $q_prod = mysqli_query($koneksi, "SELECT * FROM products WHERE id = '$id'");
+                    $p_prod = mysqli_fetch_assoc($q_prod);
+                    $nama_p = isset($p_prod['nama']) ? $p_prod['nama'] : 'Produk';
+
+                    foreach ($arr_ukuran as $ukuran => $jumlah) {
+                        $harga_sat = ($ukuran == 'medium') ? $harga_medium : $harga_large;
+                        $sub = $harga_sat * $jumlah;
+                        $grand_total += $sub;
+                ?>
+                    <div class="summary-item">
+                        <span><?= htmlspecialchars($nama_p) ?> (<strong><?= ucfirst($ukuran) ?></strong> x <?= $jumlah ?>)</span>
+                        <span>Rp <?= number_format($sub, 0, ',', '.') ?></span>
+                    </div>
+                <?php 
+                    }
+                } 
+                ?>
+                <div class="summary-total">
+                    <span>Total Pembayaran:</span>
+                    <span>Rp <?= number_format($grand_total, 0, ',', '.') ?></span>
+                </div>
+            </div>
+
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Nama Lengkap</label>
