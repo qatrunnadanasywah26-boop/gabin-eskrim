@@ -37,8 +37,8 @@ session_start();
 
         /* Styling Logo Bulat dan Diperbesar Sedikit */
         .logo-img {
-            width: 65px;  /* Lebar logo */
-            height: 65px; /* Tinggi logo (sama persis dengan width agar bulat sempurna) */
+            width: 80px;  /* Lebar logo */
+            height: 80px; /* Tinggi logo (sama persis dengan width agar bulat sempurna) */
             object-fit: cover; /* Memastikan gambar pas mengisi lingkaran tanpa gepeng */
             border-radius: 50%; /* Membuat gambar jadi bulat */
             border: 3px solid #fff; /* Bingkai putih tipis yang elegan */

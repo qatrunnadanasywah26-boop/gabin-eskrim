@@ -44,8 +44,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         }
 
         .logo-img {
-            width: 55px;  
-            height: 55px; 
+            width: 80px;  
+            height: 80px; 
             object-fit: cover; 
             border-radius: 50%; 
             border: 3px solid #fff; 
@@ -378,13 +378,13 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             <!-- Tombol Instagram -->
             <a href="https://www.instagram.com/gemasgabin_/" target="_blank" class="contact-btn">
                 <span class="heart-icon">♥</span>
-                <span class="contact-text">Instagram @binice.official 📸</span>
+                <span class="contact-text">Instagram @gemasgabin_ 📸</span>
             </a>
 
             <!-- Tombol TikTok -->
             <a href="https://www.tiktok.com/@gemasgabin?lang=en" target="_blank" class="contact-btn">
                 <span class="heart-icon">♥</span>
-                <span class="contact-text">TikTok @binIce_eskrim 🎵</span>
+                <span class="contact-text">TikTok @gemasgabin 🎵</span>
             </a>
         </div>
     </section>

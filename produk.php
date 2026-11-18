@@ -47,8 +47,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         }
 
         .logo-img {
-            width: 65px;  
-            height: 65px; 
+            width: 80px;  
+            height: 80px; 
             object-fit: cover; 
             border-radius: 50%; 
             border: 3px solid #fff; 

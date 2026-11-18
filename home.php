@@ -42,8 +42,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         }
 
         .logo-img {
-            width: 65px;  
-            height: 65px; 
+            width: 80px;  
+            height: 80px; 
             object-fit: cover; 
             border-radius: 50%; 
             border: 3px solid #fff; 
@@ -460,7 +460,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             <p>Nikmati kelezatan biskuit gabin renyah yang dipadu dengan es krim lumer beraneka rasa buah segar pilihan terbaik.</p>
             <div class="hero-buttons">
                 <a href="produk.php" class="btn-primary">Products →</a>
-                <a href="produk.php" class="btn-secondary">Explore Menu →</a>
+                <a href="contact.php" class="btn-secondary">contact →</a>
             </div>
         </div>
         <div class="hero-image-container">

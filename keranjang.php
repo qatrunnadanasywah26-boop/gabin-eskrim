@@ -107,8 +107,8 @@ if (isset($_SESSION['keranjang'])) {
         }
 
         .logo-img {
-            width: 65px;  
-            height: 65px; 
+            width: 80px;  
+            height: 80px; 
             object-fit: cover; 
             border-radius: 50%; 
             border: 3px solid #fff; 
