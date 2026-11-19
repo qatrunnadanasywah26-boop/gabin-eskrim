@@ -409,7 +409,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
     <header>
         <!-- Logo Bulat Gambar (kawai.png) di Pojok Kiri Atas -->
         <div class="logo-container">
-            <a href="home.php">
+            <a href="index.php">
                 <img src="kawai.png" alt="Logo BinIce" class="logo-img">
             </a>
         </div>

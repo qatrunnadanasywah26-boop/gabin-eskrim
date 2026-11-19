@@ -10,8 +10,8 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Katalog Produk - BinIce</title>
-    <!-- Mengimpor Google Fonts 'Playfair Display' untuk huruf judul yang sangat elegan dan cantik -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Import Font Estetik dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@500;600;700&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         
@@ -235,20 +235,20 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 100px;
+            width: 80px;
             z-index: 5;
             pointer-events: none;
         }
         .carousel-container::before {
             left: -10px;
-            background: linear-gradient(to right, rgba(255,255,255,0.75), transparent);
-            backdrop-filter: blur(2px);
+            background: linear-gradient(to right, rgba(255,255,255,0.5), transparent);
+            backdrop-filter: blur(1px);
             border-radius: 35px 0 0 35px;
         }
         .carousel-container::after {
             right: -10px;
-            background: linear-gradient(to left, rgba(255,255,255,0.75), transparent);
-            backdrop-filter: blur(2px);
+            background: linear-gradient(to left, rgba(255,255,255,0.5), transparent);
+            backdrop-filter: blur(1px);
             border-radius: 0 35px 35px 0;
         }
 
@@ -294,7 +294,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         .scroll-btn.left { left: -65px; }
         .scroll-btn.right { right: -65px; }
 
-        /* Desain Kartu Produk yang Sangat Simetris, Rapi, & Elegan */
+        /* Desain Kartu Produk */
         .card { 
             background: linear-gradient(145deg, #ffffff 0%, #fff0f3 100%);
             border-radius: 35px; 
@@ -306,17 +306,15 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             position: relative;
             border: 3px solid rgba(255, 182, 193, 0.6);
             width: 260px; 
-            height: 380px; /* Tinggi kartu dikunci presisi agar simetris sempurna */
+            height: 380px;
             padding: 25px 20px 22px 20px;
-            opacity: 0.35;
-            filter: blur(3px);
+            opacity: 0.4;
             transform: scale(0.9);
         }
         
         /* Kartu yang aktif di tengah */
         .card.active {
             opacity: 1;
-            filter: blur(0);
             transform: scale(1.06); 
             box-shadow: 0 20px 45px rgba(216, 27, 96, 0.25);
             border: 3px solid #d81b60;
@@ -333,7 +331,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             text-shadow: 0 2px 5px rgba(216, 27, 96, 0.3);
         }
 
-        /* Container Bulat Foto: GAMBAR FULL DI DALAM LINGKARAN (Tanpa kotak di dalam) */
+        /* Container Bulat Foto */
         .img-circle-container {
             width: 120px;
             height: 120px;
@@ -343,7 +341,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; /* Mengunci gambar agar mengikuti bentuk lingkaran penuh */
+            overflow: hidden;
             border: 4px solid #fff;
             box-shadow: 0 8px 20px rgba(128,0,0,0.2);
             transition: transform 0.3s ease;
@@ -354,11 +352,10 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             transform: scale(1.05);
         }
 
-        /* Gambar di dalam lingkaran dibuat 100% full memenuhi lingkaran */
         .card img { 
             width: 100%; 
             height: 100%; 
-            object-fit: cover; /* Membuat gambar mengisi penuh tanpa distorsi/kotak */
+            object-fit: cover;
             border-radius: 50%;
         }
 
@@ -372,7 +369,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             justify-content: flex-start;
         }
         
-        /* Judul Nama Produk dengan Font Cantik & Simetris */
         .card-title { 
             font-family: 'Playfair Display', serif;
             font-size: 1.2rem; 
@@ -384,10 +380,9 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            height: 48px; /* Ketinggian teks judul disamakan rata */
+            height: 48px;
         }
 
-        /* Label Teks Manis di Bawah Nama */
         .card-subtitle {
             font-size: 0.78rem;
             color: #d81b60;
@@ -404,7 +399,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             display: none; 
         }
 
-        /* Bagian Bawah Kartu (Harga & Tombol) Diselaraskan Rata Simetris */
         .card-footer-flex {
             display: flex;
             justify-content: space-between;
@@ -418,6 +412,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             font-size: 1.25rem; 
             font-weight: 800; 
             color: #d81b60; 
+            font-family: 'Fredoka', cursive, sans-serif;
         }
 
         .btn-beli { 
@@ -446,6 +441,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Responsif HP */
         @media(max-width: 900px) { 
             header { padding: 15px 5%; justify-content: space-between; } 
             .logo-container, .nav-icons { flex: unset; }
@@ -484,20 +480,25 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             .scroll-btn.left { left: -30px; width: 40px; height: 40px; font-size: 1.1rem; }
             .scroll-btn.right { right: -30px; width: 40px; height: 40px; font-size: 1.1rem; }
             .carousel-container { max-width: 280px; }
+
+            .card {
+                opacity: 0.65;
+            }
+            .card.active {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <!-- Logo Bulat Gambar (kawai.png) di Pojok Kiri Atas -->
         <div class="logo-container">
-            <a href="home.php">
+            <a href="index.php">
                 <img src="kawai.png" alt="Logo BinIce" class="logo-img">
             </a>
         </div>
         
-        <!-- Tombol Garis Tiga (Hamburger Menu) -->
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">
             <span></span>
             <span></span>
@@ -510,7 +511,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             <a href="keranjang.php">Keranjang</a>
             <a href="contact.php">Contact</a>
             
-            <!-- Menu tambahan khusus versi HP (masuk dalam dropdown garis 3) -->
             <div class="mobile-auth">
                 <a href="keranjang.php" style="background: #fff; color: #d81b60; font-weight: bold;">
                     🛒 Keranjang <span class="cart-badge"><?= $total_keranjang ?></span>
@@ -523,7 +523,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             </div>
         </nav>
 
-        <!-- Tampilan Icon / Tombol di Desktop -->
         <div class="nav-icons">
             <a href="keranjang.php" class="cart-btn" title="Keranjang">
                 🛒 Keranjang <span class="cart-badge"><?= $total_keranjang ?></span>
@@ -544,7 +543,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
             <h2>Katalog Produk</h2>
         </div>
 
-        <!-- TAMPILAN CAROUSEL SIMETRIS -->
         <div class="carousel-container">
             <button class="scroll-btn left" onclick="slideCard(-1)">&#10094;</button>
             
@@ -566,7 +564,6 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                     <div class="card" data-index="<?= $index ?>">
                         <div>
                             <div class="heart-icon">♥</div>
-                            <!-- Foto di dalam bulatan dibuat FULL melingkar tanpa kotak putih di dalamnya -->
                             <div class="img-circle-container">
                                 <img src="<?= !empty($p['gambar']) ? 'img/' . htmlspecialchars($p['gambar']) : 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600' ?>" alt="<?= htmlspecialchars($p['nama']) ?>">
                             </div>

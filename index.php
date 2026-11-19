@@ -27,14 +27,8 @@ session_start();
             font-family: 'Quicksand', sans-serif;
         }
 
-        /* Wadah logo di pojok kiri atas */
-        .logo-container {
-            position: absolute;
-            top: 25px;
-            left: 8%;
-            z-index: 10;
-        }
-
+      
+        
         /* Styling Logo Bulat dan Diperbesar Sedikit */
         .logo-img {
             width: 80px;  /* Lebar logo */
@@ -202,11 +196,7 @@ session_start();
 <body class="intro-body">
 
     <!-- Logo Bulat di Pojok Kiri Atas -->
-    <div class="logo-container">
-        <a href="home.php">
-            <img src="kawai.png" alt="Logo BinIce" class="logo-img">
-        </a>
-    </div>
+  
 
     <div class="intro-container">
         <div class="intro-text">

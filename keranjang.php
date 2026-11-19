@@ -458,7 +458,7 @@ if (isset($_SESSION['keranjang'])) {
 
     <header>
         <div class="logo-container">
-            <a href="home.php">
+            <a href="index.php">
                 <img src="kawai.png" alt="Logo BinIce" class="logo-img">
             </a>
         </div>
