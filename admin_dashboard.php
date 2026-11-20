@@ -53,7 +53,7 @@ $d_products = mysqli_fetch_assoc($q_products);
 <body style="background: #f4f6f9;">
 
     <div class="admin-nav">
-        <h2>🛠️ Admin Panel</h2>
+        <h2>halaman admin binice</h2>
         <div>
             <a href="admin_dashboard.php">Dashboard</a>
             <a href="admin_produk.php">Kelola Produk</a>

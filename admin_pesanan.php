@@ -34,7 +34,7 @@ $query_orders = mysqli_query($koneksi, "SELECT * FROM orders ORDER BY id DESC");
 <body style="background: #f4f6f9;">
 
     <div class="admin-nav">
-        <h2>🛠️ Admin Panel - BinIce</h2>
+        <h2>halaman admin BinIce</h2>
         <div>
             <a href="admin_dashboard.php">Dashboard</a>
             <a href="admin_produk.php">Kelola Produk</a>

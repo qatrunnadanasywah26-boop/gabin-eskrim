@@ -166,17 +166,7 @@ if (isset($_SESSION['keranjang'])) {
     <?php endif; ?>
 
     <header>
-      <div class="logo-container">
-            <a href="index.php">
-                <img src="kawai.png" alt="Logo BinIce" class="logo-img">
-            </a>
-        </div>
-          <!-- Tombol Garis Tiga (Hamburger Menu) untuk HP -->
-        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+   
         <nav>
             <a href="home.php">Home</a>
             <a href="produk.php">Products</a>
