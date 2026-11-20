@@ -744,7 +744,12 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>Natural Ingredients</h4>
-                    <p>Biskuit gabin pilihan, susu segar, krim manis, dan ekstrak buah asli tanpa bahan pengawet buatan.</p>
+                    <p>Gabin atau biskuit crackers
+                    Susu kental manis
+                    Susu bubuk
+                    Whipping cream
+                    Bubuk matcha
+                    Gula pasir.</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
@@ -760,7 +765,12 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>Rich Flavour</h4>
-                    <p>Perpaduan es krim lembut aneka varian rasa buah segar, matcha, dan cokelat yang lumer serta kaya rasa.</p>
+                    <p>Gabin atau biskuit crackers
+                       Susu kental manis
+                       Susu bubuk
+                       Whipping cream
+                       Pasta atau perisa anggur
+                       Gula pasir.</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
@@ -776,7 +786,12 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>No Artificial Colors</h4>
-                    <p>100% tanpa pewarna sintetis berbahaya—warna cantiknya alami dari sari buah dan bahan baku pilihan.</p>
+                    <p>Gabin atau biskuit crackers
+                       Susu kental manis
+                       Susu bubuk
+                       Whipping cream
+                       Pasta atau perisa anggur
+                       Gula pasir.</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
@@ -792,7 +807,12 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>Best Cream Formula</h4>
-                    <p>Racikan whipped cream, susu cair, dan gula pas khas BinIce agar lumer di mulut tapi tidak gampang meleleh.</p>
+                    <p>Gabin atau biskuit crackers
+                    Susu kental manis
+                    Susu bubuk
+                    Whipping cream
+                    buah mangga segar pilihan terbaik
+                    Gula pasir.</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
@@ -808,7 +828,12 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>Crispy Biscuit</h4>
-                    <p>Roti/biskuit gabin gurih renyah yang dipanggang pas untuk mengapit isian es krim dingin yang lumer.</p>
+                    <p>Gabin atau biskuit crackers
+                        Susu kental manis
+                        Susu bubuk
+                        Whipping cream
+                        Pasta atau perisa strawberry
+                        Gula pasir</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
