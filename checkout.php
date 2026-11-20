@@ -110,19 +110,30 @@ if (isset($_SESSION['keranjang'])) {
     <title>Checkout - BinIce</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #fce4ec; color: #593539; min-height: 100vh; display: flex; flex-direction: column; }
+        body {
+            background-color: #fce4ec;
+            background-image: url('bg kr2.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #593539;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: transparent; position: relative; z-index: 100; }
         .logo { font-size: 1.8rem; font-weight: 800; color: #d81b60; letter-spacing: 1px; }
         nav { display: flex; gap: 12px; align-items: center; }
-        nav a { text-decoration: none; color: #593539; font-weight: 600; font-size: 0.95rem; padding: 8px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(216, 27, 96, 0.2); transition: 0.3s; }
+        nav a { text-decoration: none; color: #593539; font-weight: 600; font-size: 0.95rem; padding: 8px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.78); border: 1px solid rgba(216, 27, 96, 0.2); transition: 0.3s; }
         nav a:hover, nav a.active { background: #d81b60; color: white; border-color: #d81b60; transform: translateY(-2px); }
         .nav-icons { display: flex; gap: 15px; font-size: 1.1rem; align-items: center; }
-        .cart-btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: #593539; background: rgba(255, 255, 255, 0.85); padding: 8px 15px; border-radius: 20px; font-weight: bold; border: 1px solid rgba(216, 27, 96, 0.3); transition: 0.3s; }
+        .cart-btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: #593539; background: rgba(255, 255, 255, 0.88); padding: 8px 15px; border-radius: 20px; font-weight: bold; border: 1px solid rgba(216, 27, 96, 0.3); transition: 0.3s; }
         .cart-btn:hover { background: #fff; color: #d81b60; }
         .cart-badge { background: #d81b60; color: white; font-size: 0.75rem; padding: 2px 7px; border-radius: 50%; font-weight: bold; }
         main { flex: 1; padding: 20px 8% 60px 8%; max-width: 800px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; justify-content: center; }
-        h2 { color: #c2185b; margin-bottom: 25px; font-size: 2rem; }
-        .form-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(216, 27, 96, 0.08); }
+        h2 { color: #c2185b; margin-bottom: 25px; font-size: 2rem; text-shadow: 0 2px 8px rgba(255, 255, 255, 0.9); }
+        .form-container { background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(6px); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(216, 27, 96, 0.14); border: 1px solid rgba(255, 255, 255, 0.85); }
         
         /* Style untuk Ringkasan Pesanan */
         .order-summary { background: #fff9fa; border: 1px solid #f8bbd0; border-radius: 12px; padding: 15px 20px; margin-bottom: 25px; }
@@ -134,7 +145,7 @@ if (isset($_SESSION['keranjang'])) {
         .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #880e4f; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid #f8bbd0; border-radius: 12px; font-size: 0.95rem; background: #fff9fa; }
         .info-box { background: #fce4ec; border-left: 4px solid #d81b60; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; color: #880e4f; }
-        .error-box { background: #ffebee; border-left: 4px solid #c62828; color: #c62828; padding: 12px; border-radius: 8px; margin-bottom: 20px; }
+        .error-box { background: rgba(255, 235, 238, 0.95); border-left: 4px solid #c62828; color: #c62828; padding: 12px; border-radius: 8px; margin-bottom: 20px; }
         .btn { display: inline-block; width: 100%; background: #d81b60; color: white; padding: 14px; border-radius: 25px; text-decoration: none; font-weight: bold; border: none; cursor: pointer; text-align: center; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3); transition: 0.3s; font-size: 1rem; }
         .btn:hover { background: #ad1457; }
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(252, 228, 236, 0.96); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; text-align: center; }

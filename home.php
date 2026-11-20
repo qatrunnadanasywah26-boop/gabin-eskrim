@@ -1,7 +1,19 @@
 <?php
 session_start();
 include 'koneksi.php';
-$total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjang']) : 0;
+
+$total_keranjang = 0;
+if (isset($_SESSION['keranjang']) && is_array($_SESSION['keranjang'])) {
+    foreach ($_SESSION['keranjang'] as $id => $arr_ukuran) {
+        if (is_array($arr_ukuran)) {
+            foreach ($arr_ukuran as $ukuran => $jumlah) {
+                $total_keranjang += (int)$jumlah;
+            }
+        } else {
+            $total_keranjang += (int)$arr_ukuran;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -496,12 +508,12 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
         }
 
         .flip-card-back p {
-            font-size: 0.78rem;
-            line-height: 1.45;
+            font-size: 0.76rem;
+            line-height: 1.4;
             color: #593539;
             font-weight: 600;
             overflow-y: auto;
-            max-height: 110px;
+            max-height: 115px;
         }
 
         .back-footer {
@@ -744,12 +756,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>Natural Ingredients</h4>
-                    <p>Gabin atau biskuit crackers
-                    Susu kental manis
-                    Susu bubuk
-                    Whipping cream
-                    Bubuk matcha
-                    Gula pasir.</p>
+                    <p>Gabin atau biskuit crackers<br>Susu kental manis<br>Susu bubuk<br>Whipping cream<br>Bubuk matcha<br>Gula pasir</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
@@ -765,12 +772,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>Rich Flavour</h4>
-                    <p>Gabin atau biskuit crackers
-                       Susu kental manis
-                       Susu bubuk
-                       Whipping cream
-                       Pasta atau perisa anggur
-                       Gula pasir.</p>
+                    <p>Gabin atau biskuit crackers<br>Susu kental manis<br>Susu bubuk<br>Whipping cream<br>Pasta atau perisa anggur<br>Gula pasir</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
@@ -786,12 +788,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>No Artificial Colors</h4>
-                    <p>Gabin atau biskuit crackers
-                       Susu kental manis
-                       Susu bubuk
-                       Whipping cream
-                       Pasta atau perisa anggur
-                       Gula pasir.</p>
+                    <p>Gabin atau biskuit crackers<br>Susu kental manis<br>Susu bubuk<br>Whipping cream<br>Pasta atau perisa anggur<br>Gula pasir</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
@@ -807,12 +804,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>Best Cream Formula</h4>
-                    <p>Gabin atau biskuit crackers
-                    Susu kental manis
-                    Susu bubuk
-                    Whipping cream
-                    buah mangga segar pilihan terbaik
-                    Gula pasir.</p>
+                    <p>Gabin atau biskuit crackers<br>Susu kental manis<br>Susu bubuk<br>Whipping cream<br>Buah mangga segar pilihan terbaik<br>Gula pasir</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>
@@ -828,12 +820,7 @@ $total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjan
                 <div class="flip-card-back">
                     <span class="back-label">Ingredients</span>
                     <h4>Crispy Biscuit</h4>
-                    <p>Gabin atau biskuit crackers
-                        Susu kental manis
-                        Susu bubuk
-                        Whipping cream
-                        Pasta atau perisa strawberry
-                        Gula pasir</p>
+                    <p>Gabin atau biskuit crackers<br>Susu kental manis<br>Susu bubuk<br>Whipping cream<br>Pasta atau perisa strawberry<br>Gula pasir</p>
                     <span class="back-footer">Klik lagi untuk balik ↺</span>
                 </div>
             </div>

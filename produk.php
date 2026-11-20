@@ -2,7 +2,18 @@
 session_start();
 include 'koneksi.php';
 
-$total_keranjang = isset($_SESSION['keranjang']) ? array_sum($_SESSION['keranjang']) : 0;
+$total_keranjang = 0;
+if (isset($_SESSION['keranjang']) && is_array($_SESSION['keranjang'])) {
+    foreach ($_SESSION['keranjang'] as $id => $arr_ukuran) {
+        if (is_array($arr_ukuran)) {
+            foreach ($arr_ukuran as $ukuran => $jumlah) {
+                $total_keranjang += (int)$jumlah;
+            }
+        } else {
+            $total_keranjang += (int)$arr_ukuran;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
